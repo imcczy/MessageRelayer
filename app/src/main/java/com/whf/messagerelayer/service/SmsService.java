@@ -14,7 +14,10 @@ import com.whf.messagerelayer.utils.NativeDataManager;
 import com.whf.messagerelayer.utils.SmsRelayerManager;
 import com.whf.messagerelayer.utils.db.DataBaseManager;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Set;
 
 public class SmsService extends IntentService {
@@ -40,6 +43,24 @@ public class SmsService extends IntentService {
         Set<String> keySet = mNativeDataManager.getKeywordSet();
         ArrayList<Contact> contactList = mDataBaseManager.getAllContact();
         //无转发规则
+
+        if ("10010".equals(mobile))
+            return;
+        if ("13296760702".equals(mobile) && content.contains("关闭转发")){
+            mNativeDataManager.setReceiver(false);
+            return;
+        }
+        if ("13296760702".equals(mobile) && content.contains("开启转发")){
+            mNativeDataManager.setReceiver(true);
+            return;
+        }
+        /*
+        String currDate = new SimpleDateFormat("MM-dd-yyyy-HH-mm").format(new Date()).split("-")[3];
+        int h = Integer.valueOf(currDate);
+        if (h <= 21 && h >=10)
+            return;
+        */
+
         if (keySet.size() == 0 && contactList.size() == 0) {
             relayMessage(content);
         } else if (keySet.size() != 0 && contactList.size() == 0) {//仅有关键字规则

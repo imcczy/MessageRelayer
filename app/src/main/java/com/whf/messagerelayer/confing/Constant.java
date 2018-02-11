@@ -17,6 +17,7 @@ public class Constant {
 
     //转发渠道配置
     public static final String KEY_RECEIVER = "is_receiver";
+    public static final String KEY_ENFORCE = "is_enforece";
     public static final String KEY_RELAY_SMS = "is_sms_relay";
     public static final String KEY_RELAY_EMAIL = "is_email_relay";
 

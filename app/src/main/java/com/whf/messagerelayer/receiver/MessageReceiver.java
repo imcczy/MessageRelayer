@@ -24,7 +24,7 @@ public class MessageReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         this.mNativeDataManager = new NativeDataManager(context);
-        if(mNativeDataManager.getReceiver()){
+        if(mNativeDataManager.getReceiver() || mNativeDataManager.getEnforce()){
             Bundle bundle = intent.getExtras();
             if(bundle!=null){
                 Object[] pdus = (Object[]) bundle.get("pdus");

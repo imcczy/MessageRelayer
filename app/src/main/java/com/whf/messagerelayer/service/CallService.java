@@ -10,14 +10,18 @@ import android.util.Log;
 
 import com.android.internal.telephony.ITelephony;
 import com.whf.messagerelayer.confing.Constant;
+import com.whf.messagerelayer.utils.NativeDataManager;
 
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by imcczy on 2017/11/27.
  */
 
-public class CallService extends Service{
+public class CallService extends Service {
     private TelephonyManager telephonyManager;
     private MyPhoneStateListener myPhoneStateListener;
 
@@ -30,7 +34,7 @@ public class CallService extends Service{
     public void onCreate() {
         super.onCreate();
 
-        Log.e("imcczy","test");
+        Log.e("imcczy", "test");
         // 监听电话状态
         telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
         myPhoneStateListener = new MyPhoneStateListener();
@@ -40,15 +44,19 @@ public class CallService extends Service{
     }
 
     private class MyPhoneStateListener extends PhoneStateListener {
+        private NativeDataManager mNativeDataManager;
         @Override
         public void onCallStateChanged(int state, final String incomingNumber) {
             super.onCallStateChanged(state, incomingNumber);
-            if (state == TelephonyManager.CALL_STATE_RINGING) {
-                Log.e("imcczy",incomingNumber);
-                sendSMS(incomingNumber);
-                endCall();
+            Context context = getApplicationContext();
+            this.mNativeDataManager = new NativeDataManager(context);
+            if (mNativeDataManager.getReceiver() || mNativeDataManager.getEnforce())
+                if (state == TelephonyManager.CALL_STATE_RINGING) {
+                    Log.e("imcczy", incomingNumber);
+                    sendSMS(incomingNumber);
+                    endCall();
 
-            }
+                }
         }
     }
 
@@ -60,7 +68,7 @@ public class CallService extends Service{
     }
 
     public void endCall() {
-        Log.e("imcczy","Begin to end call");
+        Log.e("imcczy", "Begin to end call");
         //通过反射进行实现
         try {
             //1.通过类加载器加载相应类的class文件
@@ -84,10 +92,10 @@ public class CallService extends Service{
         }
     }
 
-    private void sendSMS(String phponenum){
+    private void sendSMS(String phponenum) {
         Context context = getApplicationContext();
         Intent serviceIntent = new Intent(context, SmsService.class);
-        serviceIntent.putExtra(Constant.EXTRA_MESSAGE_CONTENT,phponenum);
+        serviceIntent.putExtra(Constant.EXTRA_MESSAGE_CONTENT, phponenum);
         context.startService(serviceIntent);
     }
 }

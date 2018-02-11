@@ -148,4 +148,12 @@ public class NativeDataManager {
         return mPreference.getString(Constant.KEY_CONTENT_PREFIX,null);
     }
 
+    public void setEnforce(Boolean b) {
+        mPreference.edit().putBoolean(Constant.KEY_ENFORCE, b).apply();
+    }
+
+    public boolean getEnforce(){
+        return mPreference.getBoolean(Constant.KEY_ENFORCE,true);
+    }
+
 }

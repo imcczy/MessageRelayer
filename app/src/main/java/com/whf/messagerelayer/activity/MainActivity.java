@@ -59,9 +59,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     menuItem.setIcon(R.mipmap.ic_send_off);
                     Toast.makeText(MainActivity.this, "总闸已关闭", Toast.LENGTH_SHORT).show();
                 } else {
-                    CallIntent = new Intent(MainActivity.this, CallService.class);
-                    startService(CallIntent);
-                    Toast.makeText(getApplicationContext(), "开启电话拦截", Toast.LENGTH_SHORT).show();
+                    //CallIntent = new Intent(MainActivity.this, CallService.class);
+                    //startService(CallIntent);
+                    //Toast.makeText(getApplicationContext(), "开启电话拦截", Toast.LENGTH_SHORT).show();
                     mNativeDataManager.setReceiver(true);
                     menuItem.setIcon(R.mipmap.ic_send_on);
                     Toast.makeText(MainActivity.this, "总闸已开启", Toast.LENGTH_SHORT).show();
